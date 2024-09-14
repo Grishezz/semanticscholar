@@ -110,7 +110,7 @@ class AsyncSemanticScholar:
         :type: :class:`bool`
         '''
         return self._retry
-    
+
     @retry.setter
     def retry(self, retry: bool) -> None:
         '''
@@ -456,7 +456,7 @@ class AsyncSemanticScholar:
 
         base_url = self.api_url + self.BASE_PATH_GRAPH
         url = f'{base_url}/paper/search'
-        
+
         if bulk:
             url += '/bulk'
             if sort:
@@ -500,7 +500,7 @@ class AsyncSemanticScholar:
 
         if min_citation_count:
             query += f'&minCitationCount={min_citation_count}'
-        
+
         max_results = 10000000 if bulk else 1000
 
         results = await PaginatedResults.create(
@@ -645,7 +645,8 @@ class AsyncSemanticScholar:
                 self,
                 query: str,
                 fields: list = None,
-                limit: int = 100
+                limit: int = 100,
+                max_results: int = 1000
             ) -> PaginatedResults:
         '''Search for authors by name
 
@@ -657,6 +658,8 @@ class AsyncSemanticScholar:
         :param list fields: (optional) list of the fields to be returned.
         :param int limit: (optional) maximum number of results to return \
                (must be <= 1000).
+        :param int max_results: (optional) maximum number of results to return \
+                (must be <= 10000).
         :returns: query results.
         :rtype: :class:`semanticscholar.PaginatedResults.PaginatedResults`
         '''
@@ -679,7 +682,7 @@ class AsyncSemanticScholar:
                 fields,
                 limit,
                 self.auth_header,
-                max_results=1000
+                max_results=max_results
             )
 
         return results
